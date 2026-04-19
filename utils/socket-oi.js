@@ -5,7 +5,7 @@ import http from 'http'
 const server = http.createServer(app)
 
 const io = new Server(server, {
-  cors: { origin: true }
+  cors: { origin: 'https://org-peach-theta.vercel.app', credentials: true }
 })
 
 io.on('connection', (socket) => {
