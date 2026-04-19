@@ -1,6 +1,10 @@
 {
-  "devDependencies": {
-    "bcryptjs": "^3.0.3",
+  "name": "org-backend-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+        "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "crypto": "^1.0.1",
@@ -14,13 +18,7 @@
     "nodemon": "^3.1.14",
     "sharp": "^0.34.5",
     "socket.io": "^4.8.3",
-    "validator": "^13.15.35"
-  },
-  "name": "org-backend-project",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
-  "dependencies": {
+    "validator": "^13.15.35",
     "accepts": "^2.0.0",
     "anymatch": "^3.1.3",
     "append-field": "^1.0.0",
