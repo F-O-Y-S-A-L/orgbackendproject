@@ -109,7 +109,7 @@ export const login = catchAsync(async (req, res, next) => {
 
    const newNotification = await notification.notifications('Login', user._id, `Logged in successfully`, user._id, Date.now())
 
-   io.to('LoginUser', {
+   io.to(user._id.toString()).emit('LoginUser', {
       message: newNotification.message,
       notification: newNotification
    })
