@@ -23,7 +23,7 @@ app.use(express.static('public'))
 dotenv.config({ path: './.env' })
 
 app.use(cors({
-   origin: "http://localhost:3000",
+   origin: "https://org-node.vercel.app",
    credentials: true
 }))
 
