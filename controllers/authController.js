@@ -95,33 +95,26 @@ export const signup = catchAsync(async (req, res, next) => {
 })
 
 export const login = catchAsync(async (req, res, next) => {
-   try {
-      const { email, password } = req.body
+   const { email, password } = req.body
 
-      if (!email || !password) {
-         return next(new AppError('Please provide your email or password', 400))
-      }
-
-      const user = await Users.findOne({ email }).select('+password')
-      console.log('User found:', user?.email)
-
-      if (!user || !(await user.correctPassword(password, user.password))) {
-         return next(new AppError('Incorrect email or password'))
-      }
-
-      const newNotification = await notification.notifications('Login', user._id, `Logged in successfully`, user._id, Date.now())
-      console.log('Notification created:', newNotification?._id)
-
-      io.to(user._id.toString()).emit('LoginUser', {
-         message: newNotification.message,
-         notification: newNotification
-      })
-
-      createSendToken(user, 200, res)
-   } catch(err) {
-      console.log('Login Error:', err)
-      next(err)
+   if (!email || !password) {
+      return next(new AppError('Please provide your email or password', 400))
    }
+
+   const user = await Users.findOne({ email }).select('+password')
+
+   if (!user || !(await user.correctPassword(password, user.password))) {
+      return next(new AppError('Incorrect email or password'))
+   }
+
+   const newNotification = await notification.notifications('Login', user._id, `Logged in successfully`, user._id, Date.now())
+
+   io.to(user._id.toString()).emit('LoginUser', {
+      message: newNotification.message,
+      notification: newNotification
+   })
+
+   createSendToken(user, 200, res)
 })
 
 export const logout = catchAsync(async (req, res, next) => {
