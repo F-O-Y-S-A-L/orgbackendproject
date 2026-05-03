@@ -16,14 +16,14 @@ import cookieParser from 'cookie-parser'
 const app = express()
 
 app.use(express.json())
-app.use(cookieParser())  
+app.use(cookieParser())   
 app.use(morgan('dev'))
 app.use(express.static('public'))
 
-dotenv.config({ path: './config.env' })
+dotenv.config({ path: './.env' })
 
 app.use(cors({
-   origin: true,
+   origin: "http://localhost:3000",
    credentials: true
 }))
 

@@ -3,8 +3,8 @@ import crypto from 'crypto'
 import catchAsync from '../utils/catchAsync.js'
 import Users from '../models/userModel.js'
 import AppError from '../utils/appError.js'
-import sendEmail from '../utils/email.js' 
-import { io } from '../utils/socket-oi.js' 
+import sendEmail from '../utils/email.js'
+import { io } from '../utils/socket-oi.js'
 import { promisify } from 'util'
 import Project from '../models/projectModel.js'
 import notification from '../controllers/notification.js'
@@ -50,7 +50,6 @@ export const signup = catchAsync(async (req, res, next) => {
    const verificationToken = newUser.createEmailVerificationToken()
    await newUser.save({ validateBeforeSave: false })
 
-   // const verifyURL = `${req.protocol}://${req.get('host')}/api/users/verifyEmail/${verificationToken}`
    const verifyURL = `${process.env.FRONTEND_URI}/verifyEmail/${verificationToken}`
 
    const newNotification = await notification.notifications('SignUp', newUser._id, `Sign Up Successfully`, newUser._id, Date.now())
@@ -87,8 +86,8 @@ export const signup = catchAsync(async (req, res, next) => {
          status: 'pending'
       })
    } catch (err) {
-      newUser.emailVerificationToken = undefined,
-         newUser.emailVerificationExpires = undefined,
+      newUser.emailVerificationToken = undefined;
+      newUser.emailVerificationExpires = undefined;
          await newUser.save({ validateBeforeSave: false })
 
       return next(new AppError('There was an error sending email. Try again later!', 500))
@@ -110,7 +109,7 @@ export const login = catchAsync(async (req, res, next) => {
 
    const newNotification = await notification.notifications('Login', user._id, `Logged in successfully`, user._id, Date.now())
 
-   io.emit('LoginUser', {
+   io.to('LoginUser', {
       message: newNotification.message,
       notification: newNotification
    })

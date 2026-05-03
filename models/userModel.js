@@ -95,9 +95,6 @@ userSchema.methods.createEmailVerificationToken = function () {
       .digest('hex')
 
    this.emailVerificationExpires = Date.now() + 10 * 60 * 1000
-
-   console.log('verificationToken:', verificationToken);
-   console.log('emailVerificationToken:', this.emailVerificationToken);
    return verificationToken
 }
 
