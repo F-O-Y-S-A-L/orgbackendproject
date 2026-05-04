@@ -6,7 +6,7 @@ import Activitylog from "../controllers/Activitylog.js";
 import notification from "../controllers/notification.js";
 import Organization from "../models/orgModel.js";
 import roleCheck from "../utils/roleCheck.js";
-import {io} from "../utils/socket-oi.js";
+import { io } from "../utils/socket-oi.js";
 
 
 export const taskCreate = catchAsync(async (req, res, next) => {
