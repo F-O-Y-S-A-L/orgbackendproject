@@ -5,8 +5,8 @@ import http from 'http'
 const server = http.createServer(app)
 
 const io = new Server(server, {
-  cors: { origin: "https://org-node.vercel.app", credentials: true }
-  // cors: { origin: "http://localhost:3000", credentials: true }
+  // cors: { origin: "https://org-node.vercel.app", credentials: true }
+  cors: { origin: "http://localhost:3000", credentials: true }
 })
 
 io.on('connection', (socket) => {

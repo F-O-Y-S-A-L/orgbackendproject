@@ -5,8 +5,18 @@ import AppError from "../utils/appError.js";
 import { io } from "../utils/socket-oi.js";
 import multer from 'multer'
 import sharp from 'sharp'
+import { v2 as cloudinary } from 'cloudinary'
+import dotenv from 'dotenv';
+dotenv.config();
+
 
 const multerStroage = multer.memoryStorage()
+ 
+cloudinary.config({
+   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+   api_key: process.env.CLOUDINARY_API_KEY,
+   api_secret: process.env.CLOUDINARY_API_SECRET,
+})
 
 const multerFilter = (req, file, cb) => {
    if (file.mimetype.startsWith('image')) {
@@ -27,13 +37,24 @@ export const uploadUserPhoto = upload.single('photo')
 export const resizeUserPhoto = catchAsync(async (req, res, next) => {
    if (!req.file) return next()
 
-   req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`
-
-   await sharp(req.file.buffer)
+   const processedBuffer = await sharp(req.file.buffer)
       .resize(500, 500)
       .toFormat('jpeg')
       .jpeg({ quality: 90 })
-      .toFile(`public/img/user/${req.file.filename}`)
+      .toBuffer()
+
+
+   const uploadResult = await new Promise((resolve, reject) => {
+      cloudinary.uploader.upload_stream(
+         { folder: 'profile-photos' },
+         (error, result) => {
+            if (error) reject(error)
+            else resolve(result)
+         }
+      ).end(processedBuffer)
+   })
+
+   req.file.cloudinaryUrl = uploadResult.secure_url
 
    next()
 })
@@ -63,7 +84,7 @@ export const updatedMe = catchAsync(async (req, res, next) => {
    }
 
    const filteredBody = filterObj(req.body, 'name', 'email')
-   if (req.file) filteredBody.photo = req.file.filename
+   if (req.file) filteredBody.photo = req.file.cloudinaryUrl;
 
    const updatedUser = await Users.findByIdAndUpdate(req.user.id, filteredBody, {
       new: true,

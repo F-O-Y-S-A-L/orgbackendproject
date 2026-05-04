@@ -1,3 +1,4 @@
+import dotenv from "dotenv";
 import userRoute from './router/userRoute.js';
 import orgRoute from './router/orgRoute.js';
 import taskRoute from './router/taskRoute.js';
@@ -8,7 +9,6 @@ import adminRoute from './router/adminRoute.js';
 import notification from './router/notificationRoute.js'; 
 import AppError from './utils/appError.js'
 import express from "express";
-import dotenv from "dotenv";
 import morgan from "morgan";
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
@@ -21,9 +21,10 @@ app.use(morgan('dev'))
 app.use(express.static('public'))
 
 dotenv.config({ path: './.env' })
+import './controllers/userController.js';
 
 app.use(cors({
-   origin: "https://org-node.vercel.app",
+   origin: "http://localhost:3000",
    credentials: true
 }))
 
@@ -34,7 +35,6 @@ app.get("/", (req, res) => {
 app.head("/", (req, res) => {
   res.status(200).send();
 });
-
 app.use('/api/users', userRoute)
 app.use('/api/org', orgRoute)
 app.use('/api/project', projectRoute) 
