@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+dotenv.config({ path: './.env' })
 import userRoute from './router/userRoute.js';
 import orgRoute from './router/orgRoute.js';
 import taskRoute from './router/taskRoute.js';
@@ -20,7 +21,6 @@ app.use(cookieParser())
 app.use(morgan('dev'))
 app.use(express.static('public'))
 
-dotenv.config({ path: './.env' })
 import './controllers/userController.js';
 
 app.use(cors({
