@@ -54,6 +54,7 @@ export const createProject = catchAsync(async (req, res, next) => {
 
 export const getProject = catchAsync(async (req, res, next) => {
    const project = await Project.findById(req.params.projectId)
+   console.log(project)
 
    if (!project) {
       return next(new AppError('Project not found.', 404))
@@ -86,7 +87,7 @@ export const getAllProject = catchAsync(async (req, res, next) => {
 
 export const getProjectbyOrg = catchAsync(async (req, res, next) => {
    const projects = await Project.find({ orgId: req.params.orgId }).populate('createdBy', 'email photo')
-
+   console.log(projects)
    if (!projects) {
       return next(new AppError('Project not found by organizations', 404))
    }

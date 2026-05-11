@@ -24,7 +24,7 @@ dotenv.config({ path: './.env' })
 import './controllers/userController.js';
 
 app.use(cors({
-   origin: 'https://org-node.vercel.app',
+   origin: process.env.FRONTEND_URI,
    credentials: true
 }))
 
