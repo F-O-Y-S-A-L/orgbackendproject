@@ -87,14 +87,10 @@ export const signup = catchAsync(async (req, res, next) => {
          status: 'pending'
       })
    } catch (err) {
-      console.log('Email send error:', err) 
-
-      await Users.findByIdAndUpdate(newUser._id, {
-         $unset: {
-            emailVerificationToken: 1,
-            emailVerificationExpires: 1
-         }
-      })
+      console.log('Email send error:', err)
+      newUser.emailVerificationToken = undefined;
+      newUser.emailVerificationExpires = undefined;
+      await newUser.save({ validateBeforeSave: false })
 
       return next(new AppError('There was an error sending email. Try again later!', 500))
    }
